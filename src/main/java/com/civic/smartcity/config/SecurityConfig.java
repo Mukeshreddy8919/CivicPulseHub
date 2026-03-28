@@ -83,6 +83,8 @@ public class SecurityConfig {
                 .requestMatchers("/api/module3/**").hasAnyRole("ADMIN", "OFFICER")
                 // ── Module 4: Officer ──────────────────
                 .requestMatchers("/api/module4/**").hasAnyRole("ADMIN", "OFFICER")
+                // ── Module 5: Feedback ─────────────────
+                .requestMatchers("/api/module5/**").hasRole("CITIZEN")
                 // ── Legacy/Other APIs ──────────────────
                 .requestMatchers("/api/grievances/**").authenticated()
                 .anyRequest().authenticated()

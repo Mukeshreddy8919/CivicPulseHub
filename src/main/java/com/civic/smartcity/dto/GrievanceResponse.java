@@ -26,4 +26,7 @@ public class GrievanceResponse {
     private String department;
     // Module 4
     private String resolutionImageBase64;
+    // Module 5
+    private Integer rating;
+    private String feedback;
 }

@@ -279,6 +279,51 @@ public class GrievanceService {
         return stats;
     }
 
+    public GrievanceResponse submitFeedback(Long id, Integer rating, String feedback, String token) {
+        String username = jwtUtil.getUsernameFromToken(token);
+        Grievance g = grievanceRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Grievance not found."));
+
+        if (!g.getCitizenUsername().equals(username)) {
+            throw new IllegalArgumentException("You can only provide feedback for your own grievances.");
+        }
+
+        if (!"RESOLVED".equals(g.getStatus())) {
+            throw new IllegalArgumentException("Feedback can only be provided for resolved grievances.");
+        }
+
+        if (rating < 1 || rating > 5) {
+            throw new IllegalArgumentException("Rating must be between 1 and 5.");
+        }
+
+        g.setRating(rating);
+        g.setFeedback(feedback);
+        g.setStatus("CLOSED");
+        g.setUpdatedAt(LocalDateTime.now());
+        grievanceRepository.save(g);
+        return toResponse(g);
+    }
+
+    public GrievanceResponse reopenGrievance(Long id, String token) {
+        String username = jwtUtil.getUsernameFromToken(token);
+        Grievance g = grievanceRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Grievance not found."));
+
+        if (!g.getCitizenUsername().equals(username)) {
+            throw new IllegalArgumentException("You can only reopen your own grievances.");
+        }
+
+        if (!"RESOLVED".equals(g.getStatus()) && !"CLOSED".equals(g.getStatus())) {
+            throw new IllegalArgumentException("Only resolved or closed grievances can be reopened.");
+        }
+
+        g.setStatus("IN_PROGRESS");
+        g.setRemarks(g.getRemarks() + " [REOPENED BY CITIZEN]");
+        g.setUpdatedAt(LocalDateTime.now());
+        grievanceRepository.save(g);
+        return toResponse(g);
+    }
+
     public List<String> getOfficerUsernames(String token) {
         String role = jwtUtil.getRoleFromToken(token);
         if (!"ADMIN".equals(role)) {
@@ -358,7 +403,8 @@ public class GrievanceService {
             g.getSubmittedAt(), g.getUpdatedAt(),
             g.getAssignedOfficer(), g.getRemarks(),
             g.getPriority(), g.getDeadline(), g.getDepartment(),
-            g.getResolutionImageBase64()
+            g.getResolutionImageBase64(),
+            g.getRating(), g.getFeedback()
         );
     }
 }
