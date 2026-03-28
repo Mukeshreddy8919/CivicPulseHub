@@ -392,8 +392,19 @@ function buildNav() {
 function navigateTo(panelId) {
   if (panelId === 'submit')    { window.location.href = '/submit.html';       return; }
   if (panelId === 'myissues')  { window.location.href = '/mygrievances.html'; return; }
+<<<<<<< HEAD
   if (panelId === 'allissues') { window.location.href = '/admingrievances.html'; return; }
   if (panelId === 'assign') { window.location.href = '/assignofficers.html'; return; }
+=======
+<<<<<<< HEAD
+  if (panelId === 'allissues') { window.location.href = '/admingrievances.html'; return; }
+  if (panelId === 'assign') { window.location.href = '/assignofficers.html'; return; }
+=======
+  if(panelId ==="allissues") { window.location.href = '/admingrievances.html'; return; }
+  if(panelId ==="assignofficers") { window.location.href = '/admingrievances.html'; return; } 
+  if(panelId ==="manageusers") { window.location.href = '/admingrievances.html'; return; }
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
   activeNav = panelId;
   buildNav();
   renderContent(panelId);

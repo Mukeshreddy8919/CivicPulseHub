@@ -1,6 +1,10 @@
 package com.civic.smartcity.service;
 
 import com.civic.smartcity.dto.AdminAssignRequest;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
 import com.civic.smartcity.dto.AdminUpdateRequest;
 import com.civic.smartcity.dto.GrievanceRequest;
 import com.civic.smartcity.dto.GrievanceResponse;
@@ -24,6 +28,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+<<<<<<< HEAD
+=======
+=======
+import com.civic.smartcity.dto.GrievanceRequest;
+import com.civic.smartcity.dto.GrievanceResponse;
+import com.civic.smartcity.model.Grievance;
+import com.civic.smartcity.repository.GrievanceRepository;
+import com.civic.smartcity.security.JwtUtil;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
 import java.util.stream.Collectors;
 
 @Service
@@ -35,15 +55,28 @@ public class GrievanceService {
     @Autowired
     private JwtUtil jwtUtil;
 
+<<<<<<< HEAD
     @Autowired
     private UserRepository userRepository;
 
+=======
+<<<<<<< HEAD
+    @Autowired
+    private UserRepository userRepository;
+
+=======
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
     private static final List<String> VALID_CATEGORIES = List.of(
         "WATER", "STREET_LIGHT", "ROAD", "SANITATION", "DRAINAGE", "PARK", "ELECTRICITY", "OTHER"
     );
     private static final List<String> VALID_PRIORITIES = List.of("LOW", "MEDIUM", "HIGH", "CRITICAL");
     private static final List<String> VALID_STATUSES   = List.of("PENDING", "IN_PROGRESS", "RESOLVED", "CLOSED");
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
     private void requireRole(String token, String... allowedRoles) {
         String role = jwtUtil.getRoleFromToken(token);
         if (Arrays.stream(allowedRoles).noneMatch(allowed -> allowed.equalsIgnoreCase(role))) {
@@ -51,6 +84,11 @@ public class GrievanceService {
         }
     }
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
     public GrievanceResponse submit(GrievanceRequest request, String token) {
         String username = jwtUtil.getUsernameFromToken(token);
         String category = request.getCategory() != null ? request.getCategory().toUpperCase() : "OTHER";
@@ -85,12 +123,25 @@ public class GrievanceService {
         return toResponse(g);
     }
 
+<<<<<<< HEAD
     public List<GrievanceResponse> getAll(String token) {
         requireRole(token, "ADMIN", "OFFICER");
+=======
+<<<<<<< HEAD
+    public List<GrievanceResponse> getAll(String token) {
+        requireRole(token, "ADMIN", "OFFICER");
+=======
+    public List<GrievanceResponse> getAll() {
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
         return grievanceRepository.findAllByOrderBySubmittedAtDesc()
             .stream().map(this::toResponse).collect(Collectors.toList());
     }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
     public List<GrievanceResponse> getByStatus(String status, String token) {
         requireRole(token, "ADMIN", "OFFICER");
         String normalizedStatus = status.toUpperCase();
@@ -98,6 +149,13 @@ public class GrievanceService {
             throw new IllegalArgumentException("Invalid status.");
         }
         return grievanceRepository.findByStatusOrderBySubmittedAtDesc(normalizedStatus)
+<<<<<<< HEAD
+=======
+=======
+    public List<GrievanceResponse> getByStatus(String status) {
+        return grievanceRepository.findByStatusOrderBySubmittedAtDesc(status.toUpperCase())
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
             .stream().map(this::toResponse).collect(Collectors.toList());
     }
 
@@ -113,6 +171,10 @@ public class GrievanceService {
         Grievance g = grievanceRepository.findById(request.getGrievanceId())
             .orElseThrow(() -> new IllegalArgumentException("Grievance not found."));
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
         if (request.getAssignedOfficer() != null) {
             String officer = request.getAssignedOfficer().trim();
             if (officer.isEmpty()) {
@@ -130,6 +192,13 @@ public class GrievanceService {
             String department = request.getDepartment().trim();
             g.setDepartment(department.isEmpty() ? null : department);
         }
+<<<<<<< HEAD
+=======
+=======
+        if (request.getAssignedOfficer() != null) g.setAssignedOfficer(request.getAssignedOfficer());
+        if (request.getDepartment()      != null) g.setDepartment(request.getDepartment());
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
         if (request.getPriority()        != null) {
             String p = request.getPriority().toUpperCase();
             if (!VALID_PRIORITIES.contains(p)) throw new IllegalArgumentException("Invalid priority.");
@@ -143,7 +212,15 @@ public class GrievanceService {
         }
         if (request.getRemarks()  != null) g.setRemarks(request.getRemarks());
 
+<<<<<<< HEAD
         if (g.getAssignedOfficer() != null && "PENDING".equals(g.getStatus()))
+=======
+<<<<<<< HEAD
+        if (g.getAssignedOfficer() != null && "PENDING".equals(g.getStatus()))
+=======
+        if (request.getAssignedOfficer() != null && "PENDING".equals(g.getStatus()))
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
             g.setStatus("IN_PROGRESS");
 
         g.setUpdatedAt(LocalDateTime.now());
@@ -165,6 +242,10 @@ public class GrievanceService {
         return toResponse(g);
     }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
     public GrievanceResponse adminUpdate(Long id, AdminUpdateRequest request, String token) {
         String role = jwtUtil.getRoleFromToken(token);
         if (!"ADMIN".equals(role)) {
@@ -321,6 +402,11 @@ public class GrievanceService {
         return response;
     }
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
     private GrievanceResponse toResponse(Grievance g) {
         return new GrievanceResponse(
             g.getId(), g.getTitle(), g.getDescription(),

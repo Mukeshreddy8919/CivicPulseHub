@@ -331,9 +331,19 @@
 
       <div class="field">
         <label>Assign Officer (username)</label>
+<<<<<<< HEAD
         <select id="fOfficer">
           <option value="">Unassigned</option>
         </select>
+=======
+<<<<<<< HEAD
+        <select id="fOfficer">
+          <option value="">Unassigned</option>
+        </select>
+=======
+        <input type="text" id="fOfficer" placeholder="Enter officer username e.g. officer_john"/>
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
       </div>
 
       <div class="field">
@@ -371,11 +381,22 @@
 
   let allGrievances = [];
   let currentId = null;
+<<<<<<< HEAD
   let officerUsernames = [];
+=======
+<<<<<<< HEAD
+  let officerUsernames = [];
+=======
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
 
   // ── Load stats + grievances ─────────────────────────────────────────────────
   async function loadData() {
     try {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
       const [statsRes, listRes, officersRes] = await Promise.all([
         fetch('/api/grievances/stats', { headers: { Authorization: 'Bearer ' + token } }),
         fetch('/api/grievances/all',   { headers: { Authorization: 'Bearer ' + token } }),
@@ -384,6 +405,17 @@
       const stats = await statsRes.json();
       const list  = await listRes.json();
       const officers = officersRes.ok ? await officersRes.json() : [];
+<<<<<<< HEAD
+=======
+=======
+      const [statsRes, listRes] = await Promise.all([
+        fetch('/api/grievances/stats', { headers: { Authorization: 'Bearer ' + token } }),
+        fetch('/api/grievances/all',   { headers: { Authorization: 'Bearer ' + token } })
+      ]);
+      const stats = await statsRes.json();
+      const list  = await listRes.json();
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
 
       document.getElementById('sTotal').textContent    = stats.total    || 0;
       document.getElementById('sPending').textContent  = stats.pending  || 0;
@@ -394,8 +426,16 @@
       document.getElementById('pendingBadge').textContent = stats.pending || 0;
 
       allGrievances = list;
+<<<<<<< HEAD
       officerUsernames = Array.isArray(officers) ? officers : [];
       renderOfficerOptions('');
+=======
+<<<<<<< HEAD
+      officerUsernames = Array.isArray(officers) ? officers : [];
+      renderOfficerOptions('');
+=======
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
       applyFilters();
     } catch (err) {
       document.getElementById('grievanceTable').innerHTML =
@@ -403,6 +443,10 @@
     }
   }
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
   function renderOfficerOptions(selectedOfficer) {
     const select = document.getElementById('fOfficer');
     if (!select) return;
@@ -418,6 +462,11 @@
     select.value = normalizedSelected;
   }
 
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
   // ── Filter + render table ───────────────────────────────────────────────────
   function applyFilters() {
     const search   = document.getElementById('searchInput').value.toLowerCase();
@@ -517,7 +566,15 @@
     // Pre-fill form
     document.getElementById('fStatus').value   = g.status || 'PENDING';
     document.getElementById('fPriority').value = g.priority || 'MEDIUM';
+<<<<<<< HEAD
     renderOfficerOptions(g.assignedOfficer || '');
+=======
+<<<<<<< HEAD
+    renderOfficerOptions(g.assignedOfficer || '');
+=======
+    document.getElementById('fOfficer').value  = g.assignedOfficer || '';
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
     document.getElementById('fRemarks').value  = g.remarks || '';
     document.getElementById('fDeadline').value = g.deadline
       ? g.deadline.substring(0, 16) : '';

@@ -3,7 +3,14 @@ package com.civic.smartcity.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+<<<<<<< HEAD
 import org.springframework.http.HttpMethod;
+=======
+<<<<<<< HEAD
+import org.springframework.http.HttpMethod;
+=======
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -76,6 +83,7 @@ public class SecurityConfig {
                 ).permitAll()
                 // ── Auth API — open ────────────────────────────────────────
                 .requestMatchers("/api/auth/**").permitAll()
+<<<<<<< HEAD
                 // ── Module 3: Admin & Officer grievance management ─────────
                 .requestMatchers(HttpMethod.GET, "/api/module3/grievances/all").hasAnyRole("ADMIN", "OFFICER")
                 .requestMatchers(HttpMethod.GET, "/api/module3/grievances/filter").hasAnyRole("ADMIN", "OFFICER")
@@ -90,6 +98,25 @@ public class SecurityConfig {
                 .requestMatchers("/api/module1/**").denyAll()
                 .requestMatchers("/api/module2/**").denyAll()
                 .requestMatchers("/api/grievances/**").denyAll()
+=======
+<<<<<<< HEAD
+                // ── Module 2: Citizen-only grievance submission & tracking ──
+                .requestMatchers(HttpMethod.POST, "/api/module2/grievances/submit").hasRole("CITIZEN")
+                .requestMatchers(HttpMethod.GET, "/api/module2/grievances/my").hasRole("CITIZEN")
+                .requestMatchers(HttpMethod.GET, "/api/module2/grievances/{id:\\d+}").hasRole("CITIZEN")
+                .requestMatchers("/api/module2/**").authenticated()
+                // ── Block module1 and module3 routes ────────────────────────
+                .requestMatchers("/api/module1/**").denyAll()
+                .requestMatchers("/api/module3/**").denyAll()
+                .requestMatchers("/api/grievances/**").denyAll()
+=======
+                // ── Grievance API — JWT validated in service ───────────────
+                .requestMatchers("/api/grievances/**").permitAll()
+                // ── Role protected ─────────────────────────────────────────
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/officer/**").hasRole("OFFICER")
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
+>>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
                 .anyRequest().authenticated()
             )
             .headers(headers -> headers
