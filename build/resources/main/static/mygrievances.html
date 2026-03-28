@@ -14,7 +14,7 @@
       --sidebar-w: 260px;
     }
     html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: var(--surface); color: var(--ink); }
-    .app { display: grid; grid-template-columns: var(--sidebar-w) 1fr; min-height: 100vh; }
+    .app { min-height: 100vh; }
 
     /* SIDEBAR - same as submit.html */
     .sidebar { background: var(--ink); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh; overflow-y: auto; }
@@ -36,12 +36,13 @@
     .logout-btn { width: 100%; padding: 10px; background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.2); border-radius: 10px; color: #f87171; font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer; }
 
     /* MAIN */
-    .main { margin-left: var(--sidebar-w); }
-    .topbar { background: var(--panel); border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+    .main { margin-left: var(--sidebar-w); min-height: 100vh; width: auto; position: relative; }
+    .topbar { background: var(--panel); border-bottom: 1px solid var(--border); padding: 18px 32px; position: sticky; top: 0; z-index: 100; }
+    .topbar-content { max-width: 1200px; display: flex; align-items: center; justify-content: space-between; width: 100%; }
     .topbar h1 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.25rem; }
     .topbar p { font-size: 0.82rem; color: var(--ink-soft); margin-top: 1px; }
     .avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--citizen); color: white; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.9rem; }
-    .content { padding: 32px; }
+    .content { padding: 40px 32px; max-width: 1200px; width: 100%; }
 
     /* FILTER BAR */
     .filter-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
@@ -58,7 +59,10 @@
     .stat-mini-label { font-size: 0.75rem; color: var(--ink-soft); margin-top: 2px; }
 
     /* GRIEVANCE CARDS */
-    .grievance-list { display: flex; flex-direction: column; gap: 14px; }
+    .grievance-list { display: grid; grid-template-columns: 1fr; gap: 20px; }
+    @media (min-width: 1200px) {
+      .grievance-list { grid-template-columns: 1fr 1fr; }
+    }
 
     .g-card { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 20px 24px; cursor: pointer; transition: box-shadow 0.2s, border-color 0.2s; }
     .g-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); border-color: #d0d7e8; }
@@ -114,6 +118,17 @@
       .main { margin-left: 0; }
       .stats-row { grid-template-columns: repeat(2, 1fr); }
     }
+
+    /* FEEDBACK MODAL SPECIFIC */
+    .star-rating { display: flex; gap: 8px; margin: 12px 0 20px; font-size: 2rem; }
+    .star { cursor: pointer; color: #ddd; transition: color 0.15s; }
+    .star.selected { color: #fbbf24; }
+    .feedback-textarea { width: 100%; min-height: 100px; padding: 12px; border: 1.5px solid var(--border); border-radius: 10px; font-family: inherit; font-size: 0.9rem; resize: vertical; margin-bottom: 20px; }
+    .btn-group { display: flex; gap: 12px; }
+    .primary-btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-family: 'Syne', sans-serif; font-weight: 700; cursor: pointer; }
+    .submit-btn { background: var(--resolved); color: white; }
+    .reopen-link { color: #ef4444; font-size: 0.8rem; text-decoration: underline; cursor: pointer; margin-top: 10px; display: block; border: none; background: none; font-family: inherit; }
+    .rated-display { display: flex; align-items: center; gap: 4px; color: #fbbf24; font-weight: 700; margin-top: 4px; }
   </style>
 </head>
 <body>
@@ -151,11 +166,13 @@
   <!-- MAIN -->
   <div class="main">
     <div class="topbar">
-      <div>
-        <h1>My Grievances</h1>
-        <p>Track the status of all your submitted complaints</p>
+      <div class="topbar-content">
+        <div>
+          <h1>My Grievances</h1>
+          <p>Track the status of all your submitted complaints</p>
+        </div>
+        <div class="avatar" id="userAvatar">C</div>
       </div>
-      <div class="avatar" id="userAvatar">C</div>
     </div>
 
     <div class="content">
@@ -209,6 +226,31 @@
   </div>
 </div>
 
+<!-- FEEDBACK MODAL -->
+<div class="modal-overlay" id="feedbackOverlay" onclick="closeFeedbackModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Rate Resolution</div>
+      <button class="modal-close" onclick="document.getElementById('feedbackOverlay').classList.remove('show')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:0.9rem; color:var(--ink-soft); margin-bottom:12px;">How would you rate the resolution of your grievance?</p>
+      <div class="star-rating" id="starRating">
+        <span class="star" data-value="1" onclick="setRating(1)">★</span>
+        <span class="star" data-value="2" onclick="setRating(2)">★</span>
+        <span class="star" data-value="3" onclick="setRating(3)">★</span>
+        <span class="star" data-value="4" onclick="setRating(4)">★</span>
+        <span class="star" data-value="5" onclick="setRating(5)">★</span>
+      </div>
+      <div class="modal-label">Comments (Optional)</div>
+      <textarea id="feedbackText" class="feedback-textarea" placeholder="Tell us more about your experience..."></textarea>
+      <div class="btn-group">
+        <button class="primary-btn submit-btn" onclick="submitFeedback()">Submit Feedback</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   const token   = localStorage.getItem('civicpulse_token');
   const userStr = localStorage.getItem('civicpulse_user');
@@ -216,6 +258,9 @@
   const user = JSON.parse(userStr);
   document.getElementById('sidebarUsername').textContent = '@' + user.username;
   document.getElementById('userAvatar').textContent = user.username[0].toUpperCase();
+  
+  let currentRating = 0;
+  let activeGrievanceId = null;
 
   let allGrievances = [];
   let currentFilter = 'ALL';
@@ -322,6 +367,17 @@
             <span class="status-badge status-${g.status}">${g.status.replace('_',' ')}</span>
           </div>
           <div class="progress-track">${stepsHtml}</div>
+          ${g.status === 'RESOLVED' ? `
+            <div style="margin-top:16px; border-top:1px dashed var(--border); padding-top:12px; display:flex; justify-content:flex-end;">
+               <button class="primary-btn submit-btn" style="flex:none; padding:8px 16px; font-size:0.8rem;" 
+                 onclick="event.stopPropagation(); openFeedbackModal(${g.id})">✅ Rate Resolution</button>
+            </div>
+          ` : ''}
+          ${g.status === 'CLOSED' ? `
+            <div style="margin-top:12px; font-size:0.75rem; color: #fbbf24; font-weight:700;">
+               ${'★'.repeat(g.rating)}${'☆'.repeat(5-g.rating)} Rated
+            </div>
+          ` : ''}
         </div>`;
     }).join('');
   }
@@ -352,6 +408,22 @@
       ${g.assignedOfficer ? `<div class="modal-field"><div class="modal-label">Assigned Officer</div><div class="modal-value">👷 ${g.assignedOfficer}</div></div>` : ''}
       ${g.remarks ? `<div class="modal-field"><div class="modal-label">Remarks</div><div class="modal-value">${g.remarks}</div></div>` : ''}
       ${g.imageBase64 ? `<div class="modal-field"><div class="modal-label">Attached Photo</div><img class="modal-img" src="${g.imageBase64}"/></div>` : ''}
+      
+      ${g.status === 'RESOLVED' ? `
+        <div style="margin-top:24px; padding-top:20px; border-top:2px dashed var(--border);">
+          <button class="primary-btn submit-btn" style="width:100%" onclick="openFeedbackModal(${g.id})">✅ Accept & Rate Resolution</button>
+          <button class="reopen-link" style="margin:12px auto 0" onclick="reopenGrievance(${g.id})">❌ Not satisfied? Reopen this grievance</button>
+        </div>
+      ` : ''}
+
+      ${g.status === 'CLOSED' ? `
+        <div style="margin-top:24px; padding-top:20px; border-top:1px solid var(--border);">
+          <div class="modal-label">Your Feedback</div>
+          <div class="rated-display">${'★'.repeat(g.rating)}${'☆'.repeat(5-g.rating)} (${g.rating}/5)</div>
+          <div class="modal-value" style="font-style:italic">"${g.feedback || 'No comments provided.'}"</div>
+          <button class="reopen-link" style="margin-top:12px" onclick="reopenGrievance(${g.id})">🔄 Need to reopen this?</button>
+        </div>
+      ` : ''}
     `;
     document.getElementById('modalOverlay').classList.add('show');
   }
@@ -361,6 +433,70 @@
   }
   function closeModalDirect() {
     document.getElementById('modalOverlay').classList.remove('show');
+  }
+
+  // --- MODULE 5 FEEDBACK LOGIC ---
+  function openFeedbackModal(id) {
+    activeGrievanceId = id;
+    setRating(0);
+    document.getElementById('feedbackText').value = '';
+    document.getElementById('feedbackOverlay').classList.add('show');
+    closeModalDirect();
+  }
+
+  function setRating(val) {
+    currentRating = val;
+    const stars = document.querySelectorAll('#starRating .star');
+    stars.forEach((s, i) => {
+      if (i < val) s.classList.add('selected');
+      else s.classList.remove('selected');
+    });
+  }
+
+  async function submitFeedback() {
+    if (currentRating === 0) {
+      alert('Please select a star rating.');
+      return;
+    }
+    try {
+      const res = await fetch(`/api/module5/grievances/${activeGrievanceId}/feedback`, {
+        method: 'POST',
+        headers: { 
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          rating: currentRating,
+          feedback: document.getElementById('feedbackText').value
+        })
+      });
+      if (!res.ok) throw new Error('Failed to submit feedback');
+      document.getElementById('feedbackOverlay').classList.remove('show');
+      loadGrievances();
+    } catch (err) {
+      alert(err.message);
+    }
+  }
+
+  async function reopenGrievance(id) {
+    if (!confirm('Are you sure you want to reopen this grievance? It will be sent back to the officer for further action.')) return;
+    try {
+      const res = await fetch(`/api/module5/grievances/${id}/reopen`, {
+        method: 'POST',
+        headers: { 'Authorization': 'Bearer ' + token }
+      });
+      if (!res.ok) throw new Error('Failed to reopen grievance');
+      closeModalDirect();
+      loadGrievances();
+    } catch (err) {
+      alert(err.message);
+    }
+  }
+
+  function closeFeedbackModal(e) {
+    if (e.target === document.getElementById('feedbackOverlay')) {
+      document.getElementById('feedbackOverlay').classList.remove('show');
+    }
   }
 
   function logout() { localStorage.clear(); window.location.href = '/index.html'; }

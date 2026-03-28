@@ -63,4 +63,8 @@ public class Grievance {
     // Module 4: Resolution details
     @Column(length = 5000000) // ~5MB base64 image
     private String resolutionImageBase64;
+
+    // Module 5: Feedback & Rating
+    private Integer rating;  // 1-5 stars
+    private String feedback; // Optional citizen comment
 }

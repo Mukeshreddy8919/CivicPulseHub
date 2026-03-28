@@ -20,7 +20,7 @@
       will-change: transform;
       backface-visibility: hidden;
     }
-    .main { margin-left: var(--sidebar-w); padding: 0; min-height: 100vh; }
+    .main { margin-left: var(--sidebar-w); min-height: 100vh; width: auto; position: relative; }
     @media (max-width: 640px) {
       .sidebar { transform: translateX(-100%); }
       .main { margin-left: 0; }
@@ -98,9 +98,9 @@
     .topbar {
       background: var(--panel); border-bottom: 1px solid var(--border);
       padding: 16px 32px;
-      display: flex; align-items: center; justify-content: space-between;
       position: sticky; top: 0; z-index: 50;
     }
+    .topbar-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; width: 100%; }
     .topbar-left h1 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.25rem; color: var(--ink); }
     .topbar-left p  { font-size: 0.82rem; color: var(--ink-soft); margin-top: 1px; }
     .topbar-right { display: flex; align-items: center; gap: 12px; }
@@ -111,7 +111,7 @@
       font-family: 'Syne', sans-serif; font-weight: 800; font-size: 0.9rem;
     }
 
-    .content { padding: 32px; }
+    .content { padding: 40px 32px; max-width: 1200px; width: 100%; }
     .welcome-banner {
       background: var(--role-color); border-radius: 20px; padding: 28px 32px;
       color: white; margin-bottom: 28px; display: flex; align-items: center; justify-content: space-between;
@@ -184,8 +184,10 @@
 
   <div class="main">
     <div class="topbar">
-      <div class="topbar-left"><h1 id="topbarTitle">Dashboard</h1><p id="topbarDate"></p></div>
-      <div class="topbar-right"><div class="avatar" id="userAvatar">?</div></div>
+      <div class="topbar-content">
+        <div class="topbar-left"><h1 id="topbarTitle">Dashboard</h1><p id="topbarDate"></p></div>
+        <div class="topbar-right"><div class="avatar" id="userAvatar">?</div></div>
+      </div>
     </div>
     <div class="content" id="dashboardContent"></div>
   </div>
