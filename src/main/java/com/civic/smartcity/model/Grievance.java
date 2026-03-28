@@ -58,6 +58,10 @@ public class Grievance {
 
     private LocalDateTime deadline;
 
+<<<<<<< HEAD
     private String department; // e.g., Public Works, Sanitation, etc.
+=======
+    private String Department; // e.g., Public Works, Sanitation, etc.
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
     
 }

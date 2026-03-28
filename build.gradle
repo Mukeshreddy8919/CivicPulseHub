@@ -4,7 +4,11 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
+<<<<<<< HEAD
 group = 'com.civic.module2'
+=======
+group = 'com.civic'
+>>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
 version = '0.0.1-SNAPSHOT'
 
 java {
