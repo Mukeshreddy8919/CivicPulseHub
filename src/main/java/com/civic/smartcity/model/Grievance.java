@@ -58,14 +58,9 @@ public class Grievance {
 
     private LocalDateTime deadline;
 
-<<<<<<< HEAD
     private String department; // e.g., Public Works, Sanitation, etc.
-=======
-<<<<<<< HEAD
-    private String department; // e.g., Public Works, Sanitation, etc.
-=======
-    private String Department; // e.g., Public Works, Sanitation, etc.
->>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
->>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
     
+    // Module 4: Resolution details
+    @Column(length = 5000000) // ~5MB base64 image
+    private String resolutionImageBase64;
 }

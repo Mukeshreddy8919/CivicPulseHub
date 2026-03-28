@@ -3,14 +3,7 @@ package com.civic.smartcity.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-<<<<<<< HEAD
 import org.springframework.http.HttpMethod;
-=======
-<<<<<<< HEAD
-import org.springframework.http.HttpMethod;
-=======
->>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
->>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -65,7 +58,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-                // ── All HTML pages and static assets ──────────────────────
+                // ── Public Assets ──────────────────────
                 .requestMatchers(
                     "/",
                     "/index.html",
@@ -74,6 +67,7 @@ public class SecurityConfig {
                     "/mygrievances.html",
                     "/admin.html",
                     "/admingrievances.html",
+                    "/officer.html",
                     "/dashboard",
                     "/submit",
                     "/mygrievances",
@@ -81,42 +75,16 @@ public class SecurityConfig {
                     "/h2-console/**",
                     "/css/**", "/js/**", "/images/**"
                 ).permitAll()
-                // ── Auth API — open ────────────────────────────────────────
+                // ── Auth API ───────────────────────────
                 .requestMatchers("/api/auth/**").permitAll()
-<<<<<<< HEAD
-                // ── Module 3: Admin & Officer grievance management ─────────
-                .requestMatchers(HttpMethod.GET, "/api/module3/grievances/all").hasAnyRole("ADMIN", "OFFICER")
-                .requestMatchers(HttpMethod.GET, "/api/module3/grievances/filter").hasAnyRole("ADMIN", "OFFICER")
-                .requestMatchers(HttpMethod.GET, "/api/module3/grievances/stats").hasAnyRole("ADMIN", "OFFICER")
-                .requestMatchers(HttpMethod.GET, "/api/module3/grievances/admin/list").hasAnyRole("ADMIN", "OFFICER")
-                .requestMatchers(HttpMethod.GET, "/api/module3/grievances/officers").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/api/module3/grievances/admin/assign").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/module3/grievances/{id:\\d+}/status").hasAnyRole("ADMIN", "OFFICER")
-                .requestMatchers(HttpMethod.PUT, "/api/module3/grievances/{id:\\d+}/admin-update").hasRole("ADMIN")
-                .requestMatchers("/api/module3/**").authenticated()
-                // ── Block module1 and module2 routes ────────────────────────
-                .requestMatchers("/api/module1/**").denyAll()
-                .requestMatchers("/api/module2/**").denyAll()
-                .requestMatchers("/api/grievances/**").denyAll()
-=======
-<<<<<<< HEAD
-                // ── Module 2: Citizen-only grievance submission & tracking ──
-                .requestMatchers(HttpMethod.POST, "/api/module2/grievances/submit").hasRole("CITIZEN")
-                .requestMatchers(HttpMethod.GET, "/api/module2/grievances/my").hasRole("CITIZEN")
-                .requestMatchers(HttpMethod.GET, "/api/module2/grievances/{id:\\d+}").hasRole("CITIZEN")
-                .requestMatchers("/api/module2/**").authenticated()
-                // ── Block module1 and module3 routes ────────────────────────
-                .requestMatchers("/api/module1/**").denyAll()
-                .requestMatchers("/api/module3/**").denyAll()
-                .requestMatchers("/api/grievances/**").denyAll()
-=======
-                // ── Grievance API — JWT validated in service ───────────────
-                .requestMatchers("/api/grievances/**").permitAll()
-                // ── Role protected ─────────────────────────────────────────
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                .requestMatchers("/api/officer/**").hasRole("OFFICER")
->>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
->>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
+                // ── Module 2: Citizen ──────────────────
+                .requestMatchers("/api/module2/**").hasRole("CITIZEN")
+                // ── Module 3: Admin & Officer ──────────
+                .requestMatchers("/api/module3/**").hasAnyRole("ADMIN", "OFFICER")
+                // ── Module 4: Officer ──────────────────
+                .requestMatchers("/api/module4/**").hasAnyRole("ADMIN", "OFFICER")
+                // ── Legacy/Other APIs ──────────────────
+                .requestMatchers("/api/grievances/**").authenticated()
                 .anyRequest().authenticated()
             )
             .headers(headers -> headers

@@ -1,23 +1,15 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.5.11'
-    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.springframework.boot' version '3.3.4'
+    id 'io.spring.dependency-management' version '1.1.6'
 }
 
-<<<<<<< HEAD
-group = 'com.civic.module3'
-=======
-<<<<<<< HEAD
-group = 'com.civic.module2'
-=======
-group = 'com.civic'
->>>>>>> c67173eb40a99dddb9e093279aabe9e9827ecb1b
->>>>>>> 1ea566780bdb2cdcc89e7693369acbc373719565
+group = 'com.civic.module4'
 version = '0.0.1-SNAPSHOT'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(25)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 

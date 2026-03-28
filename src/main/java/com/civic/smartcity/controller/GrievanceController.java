@@ -66,8 +66,8 @@ public class GrievanceController {
     public ResponseEntity<?> getAll(
             @RequestHeader("Authorization") String authHeader) {
         try {
-            extractToken(authHeader);
-            List<GrievanceResponse> list = grievanceService.getAll();
+            String token = extractToken(authHeader);
+            List<GrievanceResponse> list = grievanceService.getAll(token);
             return ResponseEntity.ok(list);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", e.getMessage()));
@@ -80,8 +80,8 @@ public class GrievanceController {
             @RequestParam String status,
             @RequestHeader("Authorization") String authHeader) {
         try {
-            extractToken(authHeader);
-            return ResponseEntity.ok(grievanceService.getByStatus(status));
+            String token = extractToken(authHeader);
+            return ResponseEntity.ok(grievanceService.getByStatus(status, token));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
