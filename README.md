@@ -25,6 +25,12 @@ CivicPulseHub is a modularized Spring Boot application for efficient civic griev
 - **Resolution Flow**: Capability to mark progress ("In Progress") and add internal resolution notes.
 - **Evidence of Resolution**: Upload completion imagery (proof) once a grievance is marked as "Resolved".
 
+### ⭐ Module 5: Feedback & Rating System
+- **Citizen Reviews**: Citizens can provide a 1-5 star rating and optional feedback once an issue is resolved.
+- **Escalation & Reopen**: Option to "Reopen" a grievance if the citizen is unsatisfied with the resolution.
+- **Interactive Star Rating**: Custom-built interactive rating component for an intuitive experience.
+- **Responsive UI**: Entire application optimized for both mobile and desktop screens with centered grid layouts.
+
 ## Tech Stack
 - **Backend**: Java 17, Spring Boot 3.3.4, Spring Security, JPA, Hibernate.
 - **Database**: H2 (In-memory for development).
