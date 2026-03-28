@@ -24,4 +24,6 @@ public class GrievanceResponse {
     private String priority;
     private LocalDateTime deadline;
     private String department;
+    // Module 4
+    private String resolutionImageBase64;
 }
